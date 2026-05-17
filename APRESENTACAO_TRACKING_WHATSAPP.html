@@ -9,7 +9,7 @@
 body{font-family:Arial,sans-serif;background:#0f1117;color:#e0e0e0;line-height:1.7;}
 .slide{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:60px 40px;border-bottom:1px solid rgba(255,255,255,0.06);}
 .slide:nth-child(even){background:#13161e;}
-.content{max-width:900px;width:100%;}
+.content{max-width:1000px;width:100%;}
 h1{font-size:clamp(28px,4vw,48px);font-weight:800;line-height:1.15;margin-bottom:16px;color:#fff;}
 h2{font-size:clamp(22px,3vw,32px);font-weight:700;line-height:1.25;margin-bottom:20px;color:#fff;}
 h3{font-size:18px;font-weight:700;color:#fff;margin-bottom:10px;}
@@ -38,6 +38,18 @@ td{font-size:14px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.0
 .cta-box p{color:rgba(255,255,255,0.85);margin-bottom:0;font-size:15px;}
 .badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:50px;padding:6px 14px;font-size:12px;color:#a0a8b8;margin:4px;}
 .divider{width:60px;height:3px;background:#19c6b5;border-radius:2px;margin:20px 0;}
+code{background:rgba(25,198,181,0.1);color:#19c6b5;padding:2px 8px;border-radius:4px;font-size:13px;font-family:'Courier New',monospace;}
+.code-block{background:#0a0d12;border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:20px;font-family:'Courier New',monospace;font-size:13px;color:#a0c8b8;overflow-x:auto;line-height:1.6;margin:16px 0;white-space:pre;}
+.schema-table{width:100%;border-collapse:collapse;margin:12px 0;font-size:13px;}
+.schema-table th{background:rgba(25,198,181,0.08);padding:8px 12px;text-align:left;font-size:11px;}
+.schema-table td{padding:8px 12px;border-bottom:1px solid rgba(255,255,255,0.04);font-family:'Courier New',monospace;font-size:13px;}
+.schema-table td:first-child{color:#19c6b5;font-weight:700;}
+.schema-table td:nth-child(2){color:#a0a8b8;}
+.phase-num{display:inline-flex;width:28px;height:28px;border-radius:50%;background:#19c6b5;color:#0f1117;font-weight:800;font-size:14px;align-items:center;justify-content:center;margin-right:8px;}
+.status-ok{color:#19c6b5;}
+.status-pending{color:#ef4444;}
+.status-new{color:#f59e0b;}
+.arrow{color:#19c6b5;font-size:20px;text-align:center;padding:4px 0;}
 @media(max-width:768px){
   .slide{padding:40px 20px;}
   .grid,.grid3{grid-template-columns:1fr;}
@@ -49,13 +61,14 @@ td{font-size:14px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.0
 <!-- SLIDE 1: Capa -->
 <div class="slide">
   <div class="content" style="text-align:center;">
-    <div class="tag">Proposta de Projeto</div>
+    <div class="tag">Projeto Completo</div>
     <h1>Rastreamento de Conversões<br><em>WhatsApp + Google Ads</em></h1>
     <p style="font-size:18px;max-width:600px;margin:0 auto 32px;">Saber exatamente quais anúncios geram conversas no WhatsApp e quais geram pacientes.</p>
     <div style="margin-bottom:24px;">
       <span class="badge">roseliandrade.com.br</span>
       <span class="badge">Google Ads AW-18004522237</span>
       <span class="badge">GTM-5C7C3HGQ</span>
+      <span class="badge">Supabase (banco de dados)</span>
     </div>
     <p style="font-size:13px;color:rgba(255,255,255,0.4);">Preparado em maio de 2026</p>
   </div>
@@ -96,10 +109,11 @@ td{font-size:14px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.0
       <tbody>
         <tr><td>Lead clica no anúncio</td><td>Rastreado</td><td>Rastreado</td></tr>
         <tr><td>Lead visita o site</td><td>Rastreado (GTM)</td><td>Rastreado + gclid capturado</td></tr>
-        <tr><td>Lead clica no WhatsApp</td><td>Rastreado (clique)</td><td>Rastreado + ref_id gerado</td></tr>
-        <tr><td>Lead envia mensagem</td><td style="color:#ef4444;">Não rastreado</td><td style="color:#19c6b5;">Rastreado (ref_id na mensagem)</td></tr>
-        <tr><td>Lead agenda consulta</td><td style="color:#ef4444;">Não rastreado</td><td style="color:#19c6b5;">Rastreado (status no sistema)</td></tr>
-        <tr><td>Google Ads sabe qual anúncio gerou</td><td style="color:#ef4444;">Não</td><td style="color:#19c6b5;">Sim (conversão offline)</td></tr>
+        <tr><td>Lead clica no WhatsApp</td><td>Rastreado (clique)</td><td>Rastreado + protocolo gerado</td></tr>
+        <tr><td>Lead envia mensagem</td><td class="status-pending">Não rastreado</td><td class="status-ok">Rastreado (protocolo na mensagem)</td></tr>
+        <tr><td>Lead agenda consulta</td><td class="status-pending">Não rastreado</td><td class="status-ok">Rastreado (status no sistema)</td></tr>
+        <tr><td>Paciente comparece</td><td class="status-pending">Não rastreado</td><td class="status-ok">Rastreado (status atualizado)</td></tr>
+        <tr><td>Google Ads sabe qual anúncio gerou</td><td class="status-pending">Não</td><td class="status-ok">Sim (conversão offline)</td></tr>
       </tbody>
     </table>
   </div>
@@ -109,7 +123,7 @@ td{font-size:14px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.0
 <div class="slide">
   <div class="content">
     <div class="tag">Como Funciona</div>
-    <h2>O sistema em 5 passos</h2>
+    <h2>O sistema em 6 passos</h2>
     <div class="divider"></div>
     <div class="flow">
       <div class="flow-step">
@@ -118,54 +132,401 @@ td{font-size:14px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.0
       </div>
       <div class="flow-step">
         <div class="flow-num">2</div>
-        <div class="flow-text"><strong>Lead visita o site</strong> — o sistema captura o gclid e salva no navegador (cookie). Isso conecta a visita ao anúncio que trouxe o lead.</div>
+        <div class="flow-text"><strong>Lead visita o site</strong> — o GTM captura o gclid (Conversion Linker) e os UTMs (campanha, palavra-chave) e salva em cookies.</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">3</div>
-        <div class="flow-text"><strong>Lead clica no WhatsApp</strong> — antes de abrir o WhatsApp, passa por uma página intermediária que gera um protocolo (ex: RA3K7X9) e salva a conexão: protocolo + gclid + campanha.</div>
+        <div class="flow-text"><strong>Lead clica no WhatsApp</strong> — o GTM intercepta o clique e redireciona para uma <em>Bridge Page</em> em vez de abrir o WhatsApp direto.</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">4</div>
-        <div class="flow-text"><strong>WhatsApp abre com mensagem pré-preenchida</strong> — "Olá, gostaria de agendar uma consulta. (protocolo RA3K7X9)". O atendente vê o protocolo.</div>
+        <div class="flow-text"><strong>Bridge Page gera protocolo</strong> — em menos de 1 segundo: gera código <code>RA-3K7X9</code>, salva no banco de dados (Supabase) junto com o gclid e campanha, e dispara conversão no Google Ads.</div>
       </div>
       <div class="flow-step">
         <div class="flow-num">5</div>
-        <div class="flow-text"><strong>Conversão importada no Google Ads</strong> — quando o lead agenda ou comparece, o protocolo conecta a conversão ao anúncio original. O Google Ads aprende quais campanhas geram pacientes reais.</div>
+        <div class="flow-text"><strong>WhatsApp abre com protocolo</strong> — "Olá, gostaria de agendar uma consulta. (ref: RA-3K7X9)". O atendente vê o código.</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-num">6</div>
+        <div class="flow-text"><strong>Atendente atualiza status</strong> — no painel: conversa → agendamento → compareceu. O Google Ads recebe a conversão offline e aprende quais campanhas geram pacientes reais.</div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 5: Fases -->
+<!-- SLIDE 5: Arquitetura do Sistema -->
 <div class="slide">
   <div class="content">
-    <div class="tag">Plano de Implementação</div>
-    <h2>3 fases, do simples ao completo</h2>
+    <div class="tag">Arquitetura</div>
+    <h2>Visão geral do sistema</h2>
     <div class="divider"></div>
-    <div class="grid3">
+    <div class="code-block">
+┌──────────────┐     ┌──────────────────────┐     ┌─────────────────┐
+│  Google Ads   │────▶│  roseliandrade.com.br │────▶│   Bridge Page   │
+│  (anúncio)    │     │  (GTM captura gclid   │     │   (wa.html)     │
+│              │     │   + UTMs em cookies)  │     │                 │
+└──────────────┘     └──────────────────────┘     └────────┬────────┘
+                                                           │
+                     ┌─────────────────────────────────────┤
+                     │                                     │
+                     ▼                                     ▼
+              ┌─────────────┐                    ┌──────────────────┐
+              │  Supabase    │                    │    WhatsApp      │
+              │  (banco)     │                    │    Business      │
+              │              │                    │                  │
+              │ protocolo    │                    │ "Olá, gostaria   │
+              │ gclid        │◀───atualiza───────│  de agendar...   │
+              │ campanha     │    status          │  (ref: RA-3K7X9)"│
+              │ status       │                    │                  │
+              └──────┬───────┘                    └──────────────────┘
+                     │
+                     ▼
+              ┌──────────────┐
+              │  Google Ads   │
+              │  Conversão    │
+              │  Offline      │
+              │  (CSV upload) │
+              └──────────────┘</div>
+  </div>
+</div>
+
+<!-- SLIDE 6: Banco de Dados — Supabase -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Banco de Dados</div>
+    <h2>Supabase — O que vamos criar</h2>
+    <div class="divider"></div>
+    <p>Supabase é um banco de dados PostgreSQL gratuito na nuvem, com API REST automática e painel de administração.</p>
+
+    <h3 style="margin-top:24px;">Tabela principal: <code>wa_conversions</code></h3>
+    <table class="schema-table">
+      <thead><tr><th>Campo</th><th>Tipo</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td>id</td><td>UUID</td><td>Identificador único (automático)</td></tr>
+        <tr><td>visitor_id</td><td>TEXT</td><td>ID anônimo do visitante</td></tr>
+        <tr><td>phone</td><td>TEXT</td><td>Telefone do paciente (preenchido depois)</td></tr>
+        <tr><td>nome</td><td>TEXT</td><td>Nome do paciente</td></tr>
+        <tr><td>status</td><td>ENUM</td><td>clique → conversa → agendamento → compareceu</td></tr>
+        <tr><td>gclid</td><td>TEXT</td><td>Google Click ID (chave para conversão offline)</td></tr>
+        <tr><td>utm_source</td><td>TEXT</td><td>google, instagram, orgânico...</td></tr>
+        <tr><td>utm_medium</td><td>TEXT</td><td>cpc, social, referral...</td></tr>
+        <tr><td>utm_campaign</td><td>TEXT</td><td>Nome da campanha</td></tr>
+        <tr><td>utm_term</td><td>TEXT</td><td>Palavra-chave do Google Ads</td></tr>
+        <tr><td>procedimento</td><td>TEXT</td><td>Ex: botox, peeling, rinoplastia</td></tr>
+        <tr><td>valor_consulta</td><td>DECIMAL</td><td>Valor cobrado (R$)</td></tr>
+        <tr><td>notas</td><td>TEXT</td><td>Anotações da recepção</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>Data/hora do clique</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:24px;">Tabela de auditoria: <code>conversion_status_log</code></h3>
+    <table class="schema-table">
+      <thead><tr><th>Campo</th><th>Tipo</th><th>Descrição</th></tr></thead>
+      <tbody>
+        <tr><td>conversion_id</td><td>UUID</td><td>Referência ao lead</td></tr>
+        <tr><td>status_anterior</td><td>ENUM</td><td>Status antes da mudança</td></tr>
+        <tr><td>status_novo</td><td>ENUM</td><td>Status depois da mudança</td></tr>
+        <tr><td>alterado_por</td><td>TEXT</td><td>Quem alterou</td></tr>
+        <tr><td>created_at</td><td>TIMESTAMP</td><td>Quando mudou</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="margin-top:24px;">Tabela de controle: <code>ga_offline_uploads</code></h3>
+    <p>Registra cada lote de conversões enviado ao Google Ads (data, quantidade, status do upload).</p>
+  </div>
+</div>
+
+<!-- SLIDE 7: Funil de Status -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Funil de Status</div>
+    <h2>Cada lead passa por 5 etapas</h2>
+    <div class="divider"></div>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="flow-num" style="background:rgba(25,198,181,0.3);">1</div>
+        <div class="flow-text"><strong>Clique</strong> — Lead clicou no WhatsApp. Bridge page registrou automaticamente. O atendente ainda não foi contatado.</div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num" style="background:rgba(25,198,181,0.45);">2</div>
+        <div class="flow-text"><strong>Conversa</strong> — Lead enviou mensagem no WhatsApp. Atendente marcou como "conversa" no painel.</div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num" style="background:rgba(25,198,181,0.6);">3</div>
+        <div class="flow-text"><strong>Agendamento</strong> — Consulta agendada. Atendente registrou data, procedimento e valor. <em>Conversão enviada ao Google Ads.</em></div>
+      </div>
+      <div class="arrow">↓</div>
+      <div class="flow-step">
+        <div class="flow-num" style="background:rgba(25,198,181,0.8);">4</div>
+        <div class="flow-text"><strong>Compareceu</strong> — Paciente veio à consulta. <em>Segunda conversão enviada ao Google Ads</em> (com valor real).</div>
+      </div>
+      <div class="arrow" style="color:#ef4444;">ou ↓</div>
+      <div class="flow-step">
+        <div class="flow-num" style="background:rgba(239,68,68,0.3);color:#ef4444;">✕</div>
+        <div class="flow-text"><strong>Não Compareceu</strong> — Paciente faltou. Pode remarcar (volta para Agendamento).</div>
+      </div>
+    </div>
+    <div class="highlight">
+      O sistema <em>impede pular etapas</em>. Não é possível marcar "compareceu" sem antes ter "agendamento". Toda mudança de status é registrada no log de auditoria.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 8: Views e Relatórios -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Relatórios Automáticos</div>
+    <h2>7 views prontas no banco de dados</h2>
+    <div class="divider"></div>
+    <div class="grid">
       <div class="card">
-        <div class="tag" style="background:rgba(25,198,181,0.2);">Fase 1</div>
-        <h3>Clique + Protocolo</h3>
-        <p>Captura gclid no site. Página intermediária gera protocolo na mensagem do WhatsApp. Reconciliação manual semanal via planilha.</p>
-        <p style="color:#19c6b5;font-weight:600;font-size:13px;margin-top:8px;">Prazo: 1 semana<br>Custo: R$ 0</p>
+        <h3>Para o Google Ads</h3>
+        <p><code>v_google_ads_agendamento</code> — CSV pronto para upload de agendamentos como conversão offline.</p>
+        <p style="margin-top:8px;"><code>v_google_ads_compareceu</code> — CSV para consultas realizadas (com valor real).</p>
       </div>
       <div class="card">
-        <div class="tag" style="background:rgba(25,198,181,0.2);">Fase 2</div>
-        <h3>Banco de Dados</h3>
-        <p>Protocolos salvos automaticamente num banco de dados. Dashboard com os leads e de qual campanha vieram. Upload semanal no Google Ads.</p>
-        <p style="color:#19c6b5;font-weight:600;font-size:13px;margin-top:8px;">Prazo: 2 semanas<br>Custo: R$ 0 (free tier)</p>
+        <h3>Funil de Conversão</h3>
+        <p><code>v_funil_conversao</code> — Quantos leads em cada etapa (clique, conversa, agendamento, compareceu) com percentuais.</p>
       </div>
       <div class="card">
-        <div class="tag" style="background:rgba(25,198,181,0.2);">Fase 3</div>
-        <h3>Automático</h3>
-        <p>WhatsApp Business API detecta mensagens recebidas. Sistema importa conversões automaticamente no Google Ads. Zero trabalho manual.</p>
-        <p style="color:#19c6b5;font-weight:600;font-size:13px;margin-top:8px;">Prazo: 3-4 semanas<br>Custo: variável (API)</p>
+        <h3>Performance por Campanha</h3>
+        <p><code>v_performance_campanha</code> — Taxa de agendamento e comparecimento por campanha. Mostra quais palavras-chave geram pacientes.</p>
+      </div>
+      <div class="card">
+        <h3>Tendência Diária</h3>
+        <p><code>v_performance_diaria</code> — Cliques, conversas e agendamentos por dia. Gráfico de evolução.</p>
+      </div>
+      <div class="card">
+        <h3>Por Procedimento</h3>
+        <p><code>v_performance_procedimento</code> — Receita total, ticket médio e volume por tipo de procedimento (botox, peeling, etc.).</p>
+      </div>
+      <div class="card">
+        <h3>Leads Recentes</h3>
+        <p><code>v_leads_recentes</code> — Painel de gestão: todos os leads ordenados por data, com flag "veio do Google Ads".</p>
       </div>
     </div>
   </div>
 </div>
 
-<!-- SLIDE 6: O que muda -->
+<!-- SLIDE 9: Bridge Page -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Bridge Page</div>
+    <h2>A página intermediária</h2>
+    <div class="divider"></div>
+    <p>Uma página leve (5KB) que aparece por menos de 1 segundo entre o clique no WhatsApp e a abertura do app.</p>
+    <div class="grid">
+      <div class="card">
+        <h3>O que ela faz</h3>
+        <div class="flow" style="margin:0;">
+          <div class="flow-step"><div class="flow-num">1</div><div class="flow-text">Lê o gclid do cookie (salvo pelo GTM)</div></div>
+          <div class="flow-step"><div class="flow-num">2</div><div class="flow-text">Lê os UTMs (campanha, palavra-chave)</div></div>
+          <div class="flow-step"><div class="flow-num">3</div><div class="flow-text">Gera protocolo <code>RA-XXXXXX</code></div></div>
+          <div class="flow-step"><div class="flow-num">4</div><div class="flow-text">Salva tudo no Supabase</div></div>
+          <div class="flow-step"><div class="flow-num">5</div><div class="flow-text">Dispara conversão Google Ads</div></div>
+          <div class="flow-step"><div class="flow-num">6</div><div class="flow-text">Redireciona para WhatsApp</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>O que o paciente vê</h3>
+        <div style="background:#f5f5f5;border-radius:12px;padding:24px;text-align:center;color:#333;margin-top:8px;">
+          <div style="width:36px;height:36px;border:3px solid rgba(37,211,102,0.2);border-top-color:#25D366;border-radius:50%;margin:0 auto 12px;"></div>
+          <div style="font-size:16px;font-weight:700;color:#222;">Abrindo WhatsApp...</div>
+          <div style="font-size:13px;color:#666;margin:4px 0 12px;">Você será redirecionado em instantes.</div>
+          <div style="font-family:monospace;font-size:16px;font-weight:700;color:#25D366;background:#e8f5e9;padding:6px 14px;border-radius:8px;display:inline-block;">RA-3K7X9</div>
+        </div>
+        <p style="margin-top:12px;font-size:13px;color:#666;">Menos de 1 segundo. O paciente quase não percebe.</p>
+      </div>
+    </div>
+    <div class="highlight">
+      <strong>Zero alteração no site WordPress.</strong> A bridge page é hospedada separadamente (GitHub Pages). O GTM redireciona os cliques no WhatsApp para ela.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 10: Alterações no GTM -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Google Tag Manager</div>
+    <h2>O que muda no GTM</h2>
+    <div class="divider"></div>
+    <table>
+      <thead>
+        <tr><th>Ação</th><th>Tag</th><th>Descrição</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="status-new">+ Nova</span></td>
+          <td><strong>UTM Cookie Writer</strong></td>
+          <td>Salva utm_source, utm_medium, utm_campaign, utm_term em cookies de 30 dias quando o lead chega ao site</td>
+        </tr>
+        <tr>
+          <td><span class="status-new">+ Nova</span></td>
+          <td><strong>WA Link Interceptor</strong></td>
+          <td>Intercepta cliques em links wa.me e whatsapp.com e redireciona para a Bridge Page</td>
+        </tr>
+        <tr>
+          <td><span class="status-pending">Remover</span></td>
+          <td><strong>WhatsApp Conversão</strong> (existente)</td>
+          <td>A bridge page assume a responsabilidade de disparar a conversão. Tag atual fica redundante.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="highlight">
+      O <strong>Conversion Linker</strong> (que já existe e captura o gclid) continua funcionando normalmente. Nenhuma tag existente é alterada além da remoção da conversão WhatsApp.
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 11: Google Ads Offline Conversions -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Google Ads</div>
+    <h2>Conversões Offline — como funciona o upload</h2>
+    <div class="divider"></div>
+
+    <h3>1. Criar 2 ações de conversão no Google Ads</h3>
+    <div class="grid" style="margin-bottom:20px;">
+      <div class="card">
+        <h3>Agendamento WhatsApp</h3>
+        <p>Ação <em>primária</em> (otimização de lances). Contagem: uma por lead. Janela: 90 dias.</p>
+      </div>
+      <div class="card">
+        <h3>Consulta Realizada</h3>
+        <p>Ação <em>secundária</em> (observação). Inclui valor real da consulta (R$). Janela: 90 dias.</p>
+      </div>
+    </div>
+
+    <h3>2. Formato do CSV para upload</h3>
+    <div class="code-block">Parameters:TimeZone=America/Sao_Paulo
+Google Click ID,Conversion Name,Conversion Time,Conversion Value,Conversion Currency
+CjwKCAjw1234Ab,Agendamento WhatsApp,2026-05-10 09:15:00,0.00,BRL
+CjwKCAjw5678Hi,Consulta Realizada,2026-05-12 14:30:00,300.00,BRL</div>
+
+    <h3>3. Upload semanal</h3>
+    <p>Google Ads → Metas → Conversões → Uploads → Fazer upload de arquivo. As views do Supabase (<code>v_google_ads_agendamento</code> e <code>v_google_ads_compareceu</code>) já geram o CSV no formato exato.</p>
+  </div>
+</div>
+
+<!-- SLIDE 12: Segurança (RLS) -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Segurança</div>
+    <h2>Quem pode ver e alterar os dados</h2>
+    <div class="divider"></div>
+    <table>
+      <thead>
+        <tr><th>Quem</th><th>Ler</th><th>Inserir</th><th>Atualizar</th><th>Deletar</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Bridge Page</strong> (anônimo)</td>
+          <td class="status-pending">Não</td>
+          <td class="status-ok">Sim (só status "clique")</td>
+          <td class="status-pending">Não</td>
+          <td class="status-pending">Não</td>
+        </tr>
+        <tr>
+          <td><strong>Dashboard</strong> (autenticado)</td>
+          <td class="status-ok">Sim</td>
+          <td class="status-ok">Sim</td>
+          <td class="status-ok">Sim</td>
+          <td class="status-ok">Sim (LGPD)</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="grid" style="margin-top:16px;">
+      <div class="card">
+        <h3>Validação de status</h3>
+        <p>Trigger no banco impede pular etapas. Não é possível ir de "clique" direto para "compareceu". O funil é respeitado automaticamente.</p>
+      </div>
+      <div class="card">
+        <h3>Log de auditoria</h3>
+        <p>Toda mudança de status é registrada: quem alterou, quando e de qual status para qual. Impossível apagar o histórico.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 13: O que precisa criar/configurar -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Passo a Passo</div>
+    <h2>O que precisamos criar e configurar</h2>
+    <div class="divider"></div>
+
+    <h3><span class="phase-num">1</span> Supabase (banco de dados) — 15 minutos</h3>
+    <div class="card" style="margin-bottom:20px;">
+      <p>1. Criar conta gratuita em <em>supabase.com</em></p>
+      <p style="margin-top:8px;">2. Criar novo projeto (região: São Paulo)</p>
+      <p style="margin-top:8px;">3. Abrir SQL Editor e colar o schema completo (3 tabelas, triggers, views, RLS)</p>
+      <p style="margin-top:8px;">4. Anotar: URL do projeto + anon key (para a bridge page)</p>
+    </div>
+
+    <h3><span class="phase-num">2</span> Bridge Page (wa.html) — 10 minutos</h3>
+    <div class="card" style="margin-bottom:20px;">
+      <p>1. Arquivo HTML único (5KB) com o JS de captura + redirect</p>
+      <p style="margin-top:8px;">2. Configurar: URL Supabase + anon key</p>
+      <p style="margin-top:8px;">3. Deploy no GitHub Pages (gratuito)</p>
+      <p style="margin-top:8px;">4. Testar: abrir a página e verificar se o registro aparece no Supabase</p>
+    </div>
+
+    <h3><span class="phase-num">3</span> GTM (2 tags novas) — 20 minutos</h3>
+    <div class="card" style="margin-bottom:20px;">
+      <p>1. Tag "UTM Cookie Writer" — salva UTMs em cookies (trigger: All Pages)</p>
+      <p style="margin-top:8px;">2. Tag "WA Link Interceptor" — redireciona cliques WhatsApp para bridge page (trigger: All Pages)</p>
+      <p style="margin-top:8px;">3. Pausar tag "WhatsApp Conversão" atual</p>
+      <p style="margin-top:8px;">4. Publicar container</p>
+    </div>
+
+    <h3><span class="phase-num">4</span> Google Ads (conversões offline) — 10 minutos</h3>
+    <div class="card" style="margin-bottom:20px;">
+      <p>1. Criar ação "Agendamento WhatsApp" (primária, janela 90 dias)</p>
+      <p style="margin-top:8px;">2. Criar ação "Consulta Realizada" (secundária, com valor)</p>
+      <p style="margin-top:8px;">3. Verificar auto-tagging ativo</p>
+    </div>
+
+    <h3><span class="phase-num">5</span> Teste completo — 15 minutos</h3>
+    <div class="card">
+      <p>1. Clicar num anúncio do Google → site → WhatsApp → verificar protocolo na mensagem</p>
+      <p style="margin-top:8px;">2. Verificar registro no Supabase com gclid preenchido</p>
+      <p style="margin-top:8px;">3. Verificar conversão no Google Ads com transaction_id</p>
+      <p style="margin-top:8px;">4. Fazer upload teste de 1 conversão offline</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 14: Infraestrutura -->
+<div class="slide">
+  <div class="content">
+    <div class="tag">Infraestrutura</div>
+    <h2>O que já temos vs o que falta</h2>
+    <div class="divider"></div>
+    <table>
+      <thead>
+        <tr><th>Item</th><th>Status</th><th>Detalhe</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Site WordPress (Enfold)</td><td class="status-ok">Ativo</td><td>roseliandrade.com.br — zero alterações</td></tr>
+        <tr><td>Google Tag Manager</td><td class="status-ok">Ativo</td><td>GTM-5C7C3HGQ (publicado)</td></tr>
+        <tr><td>Google Ads</td><td class="status-ok">Ativo</td><td>AW-18004522237</td></tr>
+        <tr><td>Conversão WhatsApp clique</td><td class="status-ok">Ativo</td><td>Label: i7tcCK30hJwcEP3pnIlD</td></tr>
+        <tr><td>Conversão Formulário</td><td class="status-ok">Ativo</td><td>Label: 2vWCCP_GiJwcEP3pnIlD</td></tr>
+        <tr><td>WhatsApp Business</td><td class="status-ok">Ativo</td><td>(13) 3224-2131</td></tr>
+        <tr><td>Conversion Linker</td><td class="status-ok">Ativo</td><td>Captura gclid automaticamente</td></tr>
+        <tr><td>Tag UTM Cookie Writer</td><td class="status-new">Criar no GTM</td><td>Salva UTMs em cookies de 30 dias</td></tr>
+        <tr><td>Tag WA Link Interceptor</td><td class="status-new">Criar no GTM</td><td>Redireciona cliques WA para bridge page</td></tr>
+        <tr><td>Supabase (banco)</td><td class="status-pending">Criar</td><td>3 tabelas + triggers + views + RLS</td></tr>
+        <tr><td>Bridge Page (wa.html)</td><td class="status-pending">Criar</td><td>GitHub Pages (gratuito)</td></tr>
+        <tr><td>Conversão offline Google Ads</td><td class="status-pending">Criar</td><td>2 ações: agendamento + consulta</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 15: Resultado -->
 <div class="slide">
   <div class="content">
     <div class="tag">Resultado</div>
@@ -198,43 +559,31 @@ td{font-size:14px;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,0.0
   </div>
 </div>
 
-<!-- SLIDE 7: Infraestrutura -->
-<div class="slide">
-  <div class="content">
-    <div class="tag">Infraestrutura Atual</div>
-    <h2>O que já temos pronto</h2>
-    <div class="divider"></div>
-    <table>
-      <thead>
-        <tr><th>Item</th><th>Status</th><th>Detalhe</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>Site WordPress</td><td style="color:#19c6b5;">Ativo</td><td>roseliandrade.com.br (Enfold)</td></tr>
-        <tr><td>Google Tag Manager</td><td style="color:#19c6b5;">Ativo</td><td>GTM-5C7C3HGQ (publicado)</td></tr>
-        <tr><td>Google Ads</td><td style="color:#19c6b5;">Ativo</td><td>AW-18004522237</td></tr>
-        <tr><td>Conversão WhatsApp clique</td><td style="color:#19c6b5;">Ativo</td><td>Label: i7tcCK30hJwcEP3pnIlD</td></tr>
-        <tr><td>Conversão Formulário</td><td style="color:#19c6b5;">Ativo</td><td>Label: 2vWCCP_GiJwcEP3pnIlD</td></tr>
-        <tr><td>WhatsApp Business</td><td style="color:#19c6b5;">Ativo</td><td>(13) 3224-2131</td></tr>
-        <tr><td>Conversion Linker</td><td style="color:#19c6b5;">Ativo</td><td>Captura gclid automaticamente</td></tr>
-        <tr><td>Página intermediária</td><td style="color:#ef4444;">Não existe</td><td>Precisa criar (Fase 1)</td></tr>
-        <tr><td>Banco de dados</td><td style="color:#ef4444;">Não existe</td><td>Precisa criar (Fase 2)</td></tr>
-        <tr><td>WhatsApp Business API</td><td style="color:#ef4444;">Não existe</td><td>Precisa configurar (Fase 3)</td></tr>
-      </tbody>
-    </table>
-  </div>
-</div>
-
-<!-- SLIDE 8: Próximos passos -->
+<!-- SLIDE 16: Próximos Passos -->
 <div class="slide">
   <div class="content" style="text-align:center;">
     <div class="tag">Próximos Passos</div>
-    <h2>Começar pela Fase 1</h2>
-    <p style="max-width:560px;margin:0 auto 24px;font-size:16px;">A Fase 1 resolve o problema principal (saber de qual campanha veio cada conversa) sem custo adicional e em 1 semana.</p>
-    <div class="cta-box">
-      <h3>O que precisa para começar</h3>
-      <p>Acesso ao GTM + Google Ads + hosting do site. A implementação da Fase 1 não altera o site atual, apenas adiciona uma página intermediária antes do WhatsApp.</p>
+    <h2>Implementação em 1 dia</h2>
+    <p style="max-width:560px;margin:0 auto 24px;font-size:16px;">Todo o sistema pode ser implementado em um dia de trabalho, com custo zero (free tier Supabase + GitHub Pages).</p>
+    <div class="grid3" style="text-align:left;">
+      <div class="card">
+        <h3>Manhã</h3>
+        <p>Criar Supabase + bridge page + deploy</p>
+      </div>
+      <div class="card">
+        <h3>Tarde</h3>
+        <p>Configurar GTM + Google Ads + teste completo</p>
+      </div>
+      <div class="card">
+        <h3>Semana 2</h3>
+        <p>Dashboard + primeiro upload offline + treinar equipe</p>
+      </div>
     </div>
-    <p style="margin-top:32px;font-size:13px;color:rgba(255,255,255,0.4);">Projeto Roseli Andrade &middot; Tracking WhatsApp + Google Ads &middot; 2026</p>
+    <div class="cta-box" style="margin-top:32px;">
+      <h3>O que precisa para começar</h3>
+      <p>Acesso ao GTM + Google Ads. O resto criamos do zero. Nenhuma alteração no site WordPress.</p>
+    </div>
+    <p style="margin-top:32px;font-size:13px;color:rgba(255,255,255,0.4);">Projeto Roseli Andrade &middot; Tracking WhatsApp + Google Ads + Supabase &middot; 2026</p>
   </div>
 </div>
 
