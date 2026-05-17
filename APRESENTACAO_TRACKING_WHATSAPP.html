@@ -124,6 +124,35 @@ code{background:rgba(6,147,227,0.08);color:var(--cyan);padding:2px 8px;border-ra
 .kb-hint{position:fixed;bottom:60px;left:50%;transform:translateX(-50%);background:rgba(255,255,255,0.95);backdrop-filter:blur(8px);padding:8px 20px;border-radius:50px;font-size:12px;color:var(--gray);z-index:100;box-shadow:var(--shadow);opacity:1;transition:opacity 1s;pointer-events:none;}
 .kb-hint.hidden{opacity:0;}
 
+/* ===== ARCHITECTURE DIAGRAM ===== */
+.arch{max-width:860px;margin:0 auto;}
+.arch-row{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:nowrap;}
+.arch-row-bottom,.arch-row-final{margin-top:0;}
+.arch-node{background:var(--white);border:2px solid rgba(0,0,0,0.08);border-radius:16px;padding:20px 24px;text-align:center;min-width:180px;max-width:240px;flex:1;position:relative;box-shadow:0 4px 16px rgba(0,0,0,0.06);transition:transform 0.2s,box-shadow 0.2s;}
+.arch-node:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,0.1);}
+.arch-icon{margin-bottom:10px;}
+.arch-title{font-size:15px;font-weight:700;color:var(--dark);margin-bottom:4px;}
+.arch-sub{font-size:12px;color:var(--gray);line-height:1.4;}
+.arch-detail{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:10px;}
+.arch-detail span{background:rgba(0,208,132,0.1);color:var(--green);font-size:10px;font-weight:700;padding:2px 8px;border-radius:50px;font-family:'Courier New',monospace;}
+
+.arch-google{border-color:rgba(66,133,244,0.3);background:linear-gradient(135deg,rgba(66,133,244,0.03),rgba(234,67,53,0.03));}
+.arch-site{border-color:rgba(6,147,227,0.3);background:linear-gradient(135deg,rgba(6,147,227,0.04),rgba(6,147,227,0.01));}
+.arch-bridge{border-color:rgba(155,81,224,0.3);background:linear-gradient(135deg,rgba(155,81,224,0.04),rgba(155,81,224,0.01));}
+.arch-supabase{border-color:rgba(0,208,132,0.3);background:linear-gradient(135deg,rgba(0,208,132,0.04),rgba(0,208,132,0.01));}
+.arch-whatsapp{border-color:rgba(37,211,102,0.3);background:linear-gradient(135deg,rgba(37,211,102,0.04),rgba(37,211,102,0.01));}
+.arch-offline{border-color:rgba(6,147,227,0.3);background:linear-gradient(135deg,rgba(6,147,227,0.04),rgba(155,81,224,0.04));max-width:400px;}
+
+.arch-arrow{font-size:24px;color:var(--cyan);font-weight:700;padding:0 12px;flex-shrink:0;opacity:0.6;}
+.arch-arrow-h{display:flex;flex-direction:column;align-items:center;font-size:24px;color:var(--gray);padding:0 16px;flex-shrink:0;opacity:0.5;}
+.arch-arrow-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;color:var(--gray);}
+
+.arch-connector-center{display:flex;justify-content:center;padding:0;}
+.arch-connector-center .arch-vline{width:2px;height:32px;background:linear-gradient(to bottom,rgba(155,81,224,0.4),rgba(0,208,132,0.4));border-radius:1px;}
+
+.arch-connector-left{display:flex;justify-content:center;padding:0;margin-right:calc(50% - 120px);}
+.arch-connector-left .arch-vline{width:2px;height:32px;background:linear-gradient(to bottom,rgba(0,208,132,0.4),rgba(6,147,227,0.4));border-radius:1px;}
+
 @media(max-width:768px){
   .slide{padding:40px 20px;}
   .grid,.grid3{grid-template-columns:1fr;}
@@ -131,6 +160,13 @@ code{background:rgba(6,147,227,0.08);color:var(--cyan);padding:2px 8px;border-ra
   .nav-prev{left:8px;}
   .nav-next{right:8px;}
   .kb-hint{display:none;}
+  .arch-row{flex-direction:column;gap:0;}
+  .arch-node{min-width:auto;max-width:100%;width:100%;}
+  .arch-arrow{transform:rotate(90deg);padding:8px 0;}
+  .arch-arrow-h{flex-direction:row;padding:8px 0;}
+  .arch-arrow-h .arch-arrow-label{margin-bottom:0;margin-right:8px;}
+  .arch-connector-left{margin-right:0;}
+  .arch-offline{max-width:100%;}
 }
 </style>
 </head>
@@ -281,33 +317,89 @@ code{background:rgba(6,147,227,0.08);color:var(--cyan);padding:2px 8px;border-ra
     <div class="tag tag-purple">Arquitetura</div>
     <h2>Visão geral do sistema</h2>
     <div class="divider"></div>
-    <div class="code-block">
-┌──────────────┐     ┌──────────────────────┐     ┌─────────────────┐
-│  Google Ads   │────▶│  roseliandrade.com.br │────▶│   Bridge Page   │
-│  (anúncio)    │     │  (GTM captura gclid   │     │   (wa.html)     │
-│              │     │   + UTMs em cookies)  │     │                 │
-└──────────────┘     └──────────────────────┘     └────────┬────────┘
-                                                           │
-                     ┌─────────────────────────────────────┤
-                     │                                     │
-                     ▼                                     ▼
-              ┌─────────────┐                    ┌──────────────────┐
-              │  Supabase    │                    │    WhatsApp      │
-              │  (banco)     │                    │    Business      │
-              │              │                    │                  │
-              │ protocolo    │                    │ "Olá, gostaria   │
-              │ gclid        │◀───atualiza───────│  de agendar...   │
-              │ campanha     │    status          │  (ref: RA-3K7X9)"│
-              │ status       │                    │                  │
-              └──────┬───────┘                    └──────────────────┘
-                     │
-                     ▼
-              ┌──────────────┐
-              │  Google Ads   │
-              │  Conversão    │
-              │  Offline      │
-              │  (CSV upload) │
-              └──────────────┘</div>
+
+    <!-- DIAGRAMA VISUAL CSS -->
+    <div class="arch">
+      <!-- ROW 1: Fluxo principal horizontal -->
+      <div class="arch-row">
+        <div class="arch-node arch-google">
+          <div class="arch-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.27-4.74 3.27-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <div class="arch-title">Google Ads</div>
+          <div class="arch-sub">Lead clica no anúncio</div>
+        </div>
+
+        <div class="arch-arrow">&rarr;</div>
+
+        <div class="arch-node arch-site">
+          <div class="arch-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0693e3" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/><circle cx="7" cy="6" r="1" fill="#0693e3"/><circle cx="10" cy="6" r="1" fill="#0693e3"/></svg>
+          </div>
+          <div class="arch-title">Site</div>
+          <div class="arch-sub">GTM captura gclid + UTMs</div>
+        </div>
+
+        <div class="arch-arrow">&rarr;</div>
+
+        <div class="arch-node arch-bridge">
+          <div class="arch-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9b51e0" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          </div>
+          <div class="arch-title">Bridge Page</div>
+          <div class="arch-sub">Gera protocolo RA-XXXXX</div>
+        </div>
+      </div>
+
+      <!-- Connector line down from Bridge -->
+      <div class="arch-connector-center">
+        <div class="arch-vline"></div>
+      </div>
+
+      <!-- ROW 2: Supabase e WhatsApp -->
+      <div class="arch-row arch-row-bottom">
+        <div class="arch-node arch-supabase">
+          <div class="arch-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00d084" stroke-width="2"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.66 3.58 3 8 3s8-1.34 8-3V6"/><path d="M4 12v6c0 1.66 3.58 3 8 3s8-1.34 8-3v-6"/></svg>
+          </div>
+          <div class="arch-title">Supabase</div>
+          <div class="arch-sub">Salva protocolo + gclid + campanha + status</div>
+          <div class="arch-detail">
+            <span>protocolo</span><span>gclid</span><span>campanha</span><span>status</span>
+          </div>
+        </div>
+
+        <div class="arch-arrow-h">
+          <div class="arch-arrow-label">atualiza status</div>
+          &larr;
+        </div>
+
+        <div class="arch-node arch-whatsapp">
+          <div class="arch-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </div>
+          <div class="arch-title">WhatsApp</div>
+          <div class="arch-sub">"Olá, gostaria de agendar...<br>(ref: RA-3K7X9)"</div>
+        </div>
+      </div>
+
+      <!-- Connector down from Supabase -->
+      <div class="arch-connector-left">
+        <div class="arch-vline"></div>
+      </div>
+
+      <!-- ROW 3: Google Ads Offline -->
+      <div class="arch-row arch-row-final">
+        <div class="arch-node arch-offline">
+          <div class="arch-icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#0693e3" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <div class="arch-title">Google Ads — Conversão Offline</div>
+          <div class="arch-sub">CSV semanal: gclid + data + valor → Google aprende quais campanhas geram pacientes</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>
 
