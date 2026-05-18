@@ -438,22 +438,28 @@
     function doLogin() {
       var pwd = document.getElementById('loginPassword').value;
       if (!pwd) return;
-      // Testa a chave tentando acessar o Supabase
-      CONFIG.serviceKey = pwd;
-      fetch(CONFIG.supabaseUrl + '/rest/v1/v_funil?select=*', {
-        headers: { 'apikey': pwd, 'Authorization': 'Bearer ' + pwd }
+      // Aceita a service key OU a anon key como credencial
+      // Testa fazendo uma chamada real ao Supabase
+      var testKey = pwd.trim();
+      var testHeaders = {
+        'apikey': testKey,
+        'Authorization': 'Bearer ' + testKey
+      };
+      fetch(CONFIG.supabaseUrl + '/rest/v1/v_funil?select=cliques', {
+        method: 'GET',
+        headers: testHeaders
       }).then(function(r) {
         if (r.ok) {
+          CONFIG.serviceKey = testKey;
           document.getElementById('loginScreen').style.display = 'none';
           document.getElementById('dashboard').style.display = 'block';
           loadData();
         } else {
-          document.getElementById('loginError').style.display = 'block';
-          CONFIG.serviceKey = '';
+          throw new Error('HTTP ' + r.status);
         }
-      }).catch(function() {
+      }).catch(function(err) {
+        console.error('Login error:', err);
         document.getElementById('loginError').style.display = 'block';
-        CONFIG.serviceKey = '';
       });
     }
 
