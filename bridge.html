@@ -95,7 +95,25 @@
         utm_content: getCookie('_ra_utm_content') || getUrlParam('utm_content') || null
       };
 
-      // ========== SAVE TO SUPABASE (via RPC) ==========
+      // ========== REDIRECT FUNCTION ==========
+      var message = 'Olá, gostaria de agendar uma consulta. (ref: ' + data.protocolo + ')';
+      var waUrl = 'https://wa.me/' + CONFIG.whatsappNumber + '?text=' + encodeURIComponent(message);
+
+      function redirectToWhatsApp() {
+        // Fire Google Ads conversion
+        if (typeof gtag === 'function') {
+          gtag('event', 'conversion', {
+            send_to: CONFIG.googleAdsConversionId + '/' + CONFIG.googleAdsConversionLabel,
+            value: 0,
+            currency: 'BRL'
+          });
+        }
+        setTimeout(function() {
+          window.location.href = waUrl;
+        }, 300);
+      }
+
+      // ========== SAVE TO SUPABASE (via RPC) — then redirect ==========
       if (CONFIG.supabaseAnonKey) {
         fetch(CONFIG.supabaseUrl + '/rest/v1/rpc/register_wa_click', {
           method: 'POST',
@@ -114,27 +132,15 @@
             p_utm_term: data.utm_term,
             p_utm_content: data.utm_content
           })
+        }).then(function() {
+          redirectToWhatsApp();
         }).catch(function(err) {
           console.error('Supabase error:', err);
+          redirectToWhatsApp(); // redireciona mesmo se falhar
         });
+      } else {
+        redirectToWhatsApp();
       }
-
-      // ========== FIRE GOOGLE ADS CONVERSION ==========
-      if (typeof gtag === 'function') {
-        gtag('event', 'conversion', {
-          send_to: CONFIG.googleAdsConversionId + '/' + CONFIG.googleAdsConversionLabel,
-          value: 0,
-          currency: 'BRL'
-        });
-      }
-
-      // ========== REDIRECT TO WHATSAPP ==========
-      var message = 'Olá, gostaria de agendar uma consulta. (ref: ' + data.protocolo + ')';
-      var waUrl = 'https://wa.me/' + CONFIG.whatsappNumber + '?text=' + encodeURIComponent(message);
-
-      setTimeout(function() {
-        window.location.href = waUrl;
-      }, CONFIG.redirectDelay);
 
     })();
   </script>
