@@ -323,9 +323,9 @@
     <div class="login-box">
       <h1>Clínica Dra. Roseli</h1>
       <p>Painel de Atendimento</p>
-      <input type="password" id="loginPassword" placeholder="Chave de acesso (service key)" onkeydown="if(event.key==='Enter')doLogin()">
+      <input type="password" id="loginPassword" placeholder="Senha" onkeydown="if(event.key==='Enter')doLogin()">
       <button class="btn btn-primary" onclick="doLogin()">Entrar</button>
-      <div id="loginError" class="login-error">Chave inválida</div>
+      <div id="loginError" class="login-error">Senha incorreta</div>
     </div>
   </div>
 
@@ -427,35 +427,37 @@
     // ========== CONFIG ==========
     var CONFIG = {
       supabaseUrl: 'https://xjngdyhzpgktddxfmdgq.supabase.co',
-      serviceKey: '' // preenchido no login com a service key
+      anonKey: 'sb_publishable_gS5lC6Jhugq73v-_MMzM7g_GGWFDNZc',
+      authEmail: 'dashboard@clinicaroseli.local',
+      accessToken: ''
     };
 
     var allLeads = [];
     var currentFilter = 'todos';
     var searchTerm = '';
 
-    // ========== LOGIN ==========
+    // ========== LOGIN (Supabase Auth) ==========
     function doLogin() {
       var pwd = document.getElementById('loginPassword').value;
       if (!pwd) return;
-      // Service key deve ser usada em ambos os headers
-      var testKey = pwd.trim();
-      var testHeaders = {
-        'apikey': testKey,
-        'Authorization': 'Bearer ' + testKey
-      };
-      fetch(CONFIG.supabaseUrl + '/rest/v1/v_funil?select=cliques', {
-        method: 'GET',
-        headers: testHeaders
+      fetch(CONFIG.supabaseUrl + '/auth/v1/token?grant_type=password', {
+        method: 'POST',
+        headers: {
+          'apikey': CONFIG.anonKey,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email: CONFIG.authEmail,
+          password: pwd.trim()
+        })
       }).then(function(r) {
-        if (r.ok) {
-          CONFIG.serviceKey = pwd.trim();
-          document.getElementById('loginScreen').style.display = 'none';
-          document.getElementById('dashboard').style.display = 'block';
-          loadData();
-        } else {
-          throw new Error('HTTP ' + r.status);
-        }
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(data) {
+        CONFIG.accessToken = data.access_token;
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        loadData();
       }).catch(function(err) {
         console.error('Login error:', err);
         document.getElementById('loginError').style.display = 'block';
@@ -466,8 +468,8 @@
     function api(path, options) {
       var opts = options || {};
       var headers = {
-        'apikey': CONFIG.serviceKey,
-        'Authorization': 'Bearer ' + CONFIG.serviceKey,
+        'apikey': CONFIG.anonKey,
+        'Authorization': 'Bearer ' + CONFIG.accessToken,
         'Content-Type': 'application/json'
       };
       if (opts.prefer) headers['Prefer'] = opts.prefer;
