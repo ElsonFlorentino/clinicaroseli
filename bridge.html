@@ -95,17 +95,25 @@
         utm_content: getCookie('_ra_utm_content') || getUrlParam('utm_content') || null
       };
 
-      // ========== SAVE TO SUPABASE ==========
+      // ========== SAVE TO SUPABASE (via RPC) ==========
       if (CONFIG.supabaseAnonKey) {
-        fetch(CONFIG.supabaseUrl + '/rest/v1/wa_conversions', {
+        fetch(CONFIG.supabaseUrl + '/rest/v1/rpc/register_wa_click', {
           method: 'POST',
           headers: {
             'apikey': CONFIG.supabaseAnonKey,
             'Authorization': 'Bearer ' + CONFIG.supabaseAnonKey,
-            'Content-Type': 'application/json',
-            'Prefer': 'return=minimal'
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify(data)
+          body: JSON.stringify({
+            p_protocolo: data.protocolo,
+            p_visitor_id: data.visitor_id,
+            p_gclid: data.gclid,
+            p_utm_source: data.utm_source,
+            p_utm_medium: data.utm_medium,
+            p_utm_campaign: data.utm_campaign,
+            p_utm_term: data.utm_term,
+            p_utm_content: data.utm_content
+          })
         }).catch(function(err) {
           console.error('Supabase error:', err);
         });
