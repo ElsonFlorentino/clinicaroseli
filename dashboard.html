@@ -427,8 +427,7 @@
     // ========== CONFIG ==========
     var CONFIG = {
       supabaseUrl: 'https://xjngdyhzpgktddxfmdgq.supabase.co',
-      anonKey: 'sb_publishable_gS5lC6Jhugq73v-_MMzM7g_GGWFDNZc',
-      serviceKey: '' // preenchido no login
+      serviceKey: '' // preenchido no login com a service key
     };
 
     var allLeads = [];
@@ -439,10 +438,11 @@
     function doLogin() {
       var pwd = document.getElementById('loginPassword').value;
       if (!pwd) return;
-      // Usa anon key como apikey + service key no Authorization
+      // Service key deve ser usada em ambos os headers
+      var testKey = pwd.trim();
       var testHeaders = {
-        'apikey': CONFIG.anonKey,
-        'Authorization': 'Bearer ' + pwd.trim()
+        'apikey': testKey,
+        'Authorization': 'Bearer ' + testKey
       };
       fetch(CONFIG.supabaseUrl + '/rest/v1/v_funil?select=cliques', {
         method: 'GET',
@@ -466,7 +466,7 @@
     function api(path, options) {
       var opts = options || {};
       var headers = {
-        'apikey': CONFIG.anonKey,
+        'apikey': CONFIG.serviceKey,
         'Authorization': 'Bearer ' + CONFIG.serviceKey,
         'Content-Type': 'application/json'
       };
