@@ -427,7 +427,8 @@
     // ========== CONFIG ==========
     var CONFIG = {
       supabaseUrl: 'https://xjngdyhzpgktddxfmdgq.supabase.co',
-      serviceKey: '' // preenchido no login com a service key do Supabase
+      anonKey: 'sb_publishable_gS5lC6Jhugq73v-_MMzM7g_GGWFDNZc',
+      serviceKey: '' // preenchido no login
     };
 
     var allLeads = [];
@@ -438,19 +439,17 @@
     function doLogin() {
       var pwd = document.getElementById('loginPassword').value;
       if (!pwd) return;
-      // Aceita a service key OU a anon key como credencial
-      // Testa fazendo uma chamada real ao Supabase
-      var testKey = pwd.trim();
+      // Usa anon key como apikey + service key no Authorization
       var testHeaders = {
-        'apikey': testKey,
-        'Authorization': 'Bearer ' + testKey
+        'apikey': CONFIG.anonKey,
+        'Authorization': 'Bearer ' + pwd.trim()
       };
       fetch(CONFIG.supabaseUrl + '/rest/v1/v_funil?select=cliques', {
         method: 'GET',
         headers: testHeaders
       }).then(function(r) {
         if (r.ok) {
-          CONFIG.serviceKey = testKey;
+          CONFIG.serviceKey = pwd.trim();
           document.getElementById('loginScreen').style.display = 'none';
           document.getElementById('dashboard').style.display = 'block';
           loadData();
@@ -467,7 +466,7 @@
     function api(path, options) {
       var opts = options || {};
       var headers = {
-        'apikey': CONFIG.serviceKey,
+        'apikey': CONFIG.anonKey,
         'Authorization': 'Bearer ' + CONFIG.serviceKey,
         'Content-Type': 'application/json'
       };
